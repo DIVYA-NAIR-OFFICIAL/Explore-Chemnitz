@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      
+      padding: 0;
+      height: 100%;
+    }
+
+    body.list-view nav#main-navbar {
+      display: block;
+      height: 100px;
+
+    }
+
+    body.list-view #app-name {
+      display: none;
+    }
+
+    body.list-view #categoryFilterContainer {
+      font-size: 16px !important;
+      transform: translateX(65px);
+    }
+
+    body.list-view #gpsButton {
+      display: none !important;
+    }
+    body.list-view .planner-widget {
+  display: none !important;
+}
+
+    nav#main-navbar {
+      width: 100%;
+      height: 900px;
+      background-image: url("/images/earth.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #63f7ff;
+      font-family: 'Segoe UI', sans-serif;
+
+      padding: 0 20px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+      z-index: 1000px;
+      background-blend-mode: multiply;
+      background-color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: height 0.3s ease;
+    }
+#main-subheading {
+  font-size: 24px;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 10px;   
+  margin-bottom: 10px; 
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  background: linear-gradient(90deg, #60a5fa, #3b82f6); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgb(1, 1, 14);
+ 
+}
+
+.planner-widget {
+  margin-top: 0;       
+  margin-bottom: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  color: #333;
+    padding: 10px 20px;
+
+}
+
+
+.search__options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.search__options a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #0072ff;
+  padding: 8px 16px;
+  border: 1px solid #0072ff;
+  border-radius: 5px;
+  background: white;
+}
+
+.search__options a.js__tab_active {
+  background: #0072ff;
+  color: white;
+}
+
+.search__form {
+  margin-top: 20px;
+}
+
+.search__form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.search__form button {
+  padding: 10px 20px;
+  background: #0072ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#exploreSuggestions {
+  position: absolute;
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: none;
+  z-index: 999;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+#exploreSuggestions div {
+  padding: 5px;
+  cursor: pointer;
+}
+
+#exploreSuggestions div:hover {
+  background: #f0f0f0;
+}
+    #nav-top-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 20px;
+    }
+
+    #center-nav-items {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 40px;
+      width: 100%;
+    }
+    #left-controls {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#backButton {
+  background: none;
+  border: none;
+  color: rgb(1, 1, 14);
+  font-weight: 900;
+  cursor: pointer;
+  margin-right: 10px;
+  
+}
+
+
+  #categoryFilterContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center; 
+  width: 350px;         
+  margin: 0 auto;
+  gap: 15px;            
+  flex-wrap: nowrap;
+  color: rgb(1, 1, 14);
+  transform: none;
+    background-color: transparent; 
+     appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+}
+
+#categorySelectLabel {
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+  margin-right: 5px;
+  translate: 10px;
+   border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: 'Segoe UI', sans-serif;
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  background-color: transparent; 
+
+
+}
+#categorySelect {
+  background: transparent !important;
+  border: 1px solid transparent;
+  border-radius: 1px;
+   font-size: 16px;
+  font-weight: bold;
+}
+
+#gpsButton {
+  margin-left: auto; 
+}
+
+#gpsButton,
+#travelJournalBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-left: 10px; 
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(1, 1, 14);
+  cursor: pointer;
+  font-family: 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  text-align: left;
+}
+
+#gpsButton:hover,
+#travelJournalBtn:hover {
+  text-decoration: underline; 
+}
+
+
+    #categorySelect option {
+      background-color:rgb(166, 185, 239);
+;
+      color: black;
+      #categorySelect option {
+  font-size: 16px;
+  font-weight: bold;
+
+  
+}
+    }
+
+    #right-nav-items {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 250px;
+      position: relative;
+    }
+
+
+
+    #search-wrapper {
+      position: relative;
+      max-width: 180px;
+    }
+
+    #searchInput {
+      width: 80%;
+      padding: 4px;
+      border-radius: 4px;
+      border: 1px solid #63f7ff;
+      background: transparent;
+      color: #63f7ff;
+      outline: none;
+      font-size: 16px;
+      font-family: 'Segoe UI', sans-serif;
+
+      ::placeholder {
+        color: #63f7ff;
+      }
+    }
+
+    #suggestions {
+      position: absolute;
+      background: white;
+      color: black;
+      top: 30px;
+      left: 0;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: none;
+      z-index: 999;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    #suggestions div {
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    #suggestions div:hover {
+      background: #f0f0f0;
+    }
+
+    #user-initial-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      color: rgb(1, 1, 14);;
+      padding: 6px 10px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 13px;
+      width: 20px;
+      height: 23px;
+      user-select: none;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+        border: 2px solid black;  
+
+    }
+    .hamburger-menu {
+  width: 40px; 
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 20px; 
+}
+
+.hamburger-line {
+  height: 4px;         
+  background-color: rgb(1, 1, 14);
+  border-radius: 2px;  
+}
+
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: white;
+      color: white;
+      padding: 10px;
+      min-width: 160px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      z-index: 1000;
+      transform: translateX(-20px);
+
+    }
+
+    .dropdown-menu a,
+    .dropdown-menu button {
+      display: block;
+      background: none;
+      border: none;
+      padding: 6px 8px;
+      cursor: pointer;
+      text-align: left;
+      text-decoration: none;
+      color: black;
+      font-size: 14px;
+        font-weight: bold;
+
+    }
+
+    .dropdown-menu a:hover,
+    .dropdown-menu button:hover {
+      background-color: rgb(166, 185, 239);
+    }
+
+    #app-name {
+      font-size: 80px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
+      margin: auto;
+      padding: 0;
+      user-select: none;
+      transition: font-size 0.3s ease;
+    }
+    input[type="text"]#newUsername {
+  width: 100%;
+  max-width: 300px; /* adjust as needed */
+  padding: 10px 12px;
+  font-size: 16px;
+  color: black;
+  border: 2px solid #63f7ff;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  margin-bottom: 12px; 
+
+}
+
+input[type="text"]#newUsername:focus {
+  border-color: black; 
+  box-shadow: black;
+}
+    button[type="submit"] {
+  background-color: #63f7ff; 
+  color: rgb(5, 5, 5);
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 200;
+  transition: background-color 0.3s ease;
+}
+button[type="submit"]:hover {
+  background-color: #63f7ff;
+}
+
+    .dots-menu {
+      font-size: 22px;
+      user-select: none;
+      cursor: pointer;
+      color: rgb(1, 1, 14);
+    }
+
+    main {
+      padding-top: 0;
+      max-width: 100%;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    #map {
+      height: 600px;
+      width: 100%;
+      position: relative;
+      top: 0;
+      border: 3px solid #0072ff;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0;
+    }
+
+    #listView {
+      display: none;
+      padding: 10px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .list-item {
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .list-item img {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .list-item-content {
+      flex-grow: 1;
+    }
+
+    .list-item-content h3 {
+      margin: 0 0 6px 0;
+      font-size: 1.2rem;
+      color: #003366;
+    }
+
+    .list-item-content p {
+      margin: 0 0 8px 0;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .location-link {
+      color: #2a87f8;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-block;
+      margin-right: 12px;
+    }
+
+    .favorite-star {
+  font-size: 22px;
+  cursor: pointer;
+  color: #ccc; 
+  transition: color 0.3s;
+  user-select: none; 
+}
+.favorite-star.favorited,
+.favorite-star.favorited:hover {
+  color: gold !important; 
+}
+</style>
+</head>
+
+<body>
+
+  <nav id="main-navbar">
+    <div id="nav-top-line">
+      <div id="center-nav-items">
+        <div id="left-controls">
+    <button id="backButton">⬅</button>
+  </div>
+
+        
+        <div id="categoryFilterContainer">
+        
+    <label id="categorySelectLabel" for="categorySelect">Category</label>
+ 
+</select>
+          <select id="categorySelect">
+            <option value="all">All Sites</option>
+            <option value="galleries">Galleries</option>
+            <option value="museums">Museums</option>
+            <option value="garden">Garden</option>
+            <option value="castle">Castle</option>
+            <option value="other">Other</option>
+          </select>
+           
+          <button id="gpsButton" onclick="getLocation()">📍 My Location</button>
+            <button id="travelJournalBtn">📔 Travel Journal</button>
+
+        </div>
+      </div>
+      <div id="right-nav-items">
+
+
+      
+        <div id="user-initial-display" title="Logged in user initial" style="display:none;"></div>
+        <div style="position: relative;">
+<div class="hamburger-menu" id="dotsMenu" title="Menu">
+  <div class="hamburger-line"></div>
+  <div class="hamburger-line"></div>
+  <div class="hamburger-line"></div>
+</div>          
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="user-profile.html" id="userProfileLink">User Profile</a>
+
+            <a href="login.html" id="loginLink">Login</a>
+            <a href="register.html" id="registerLink">Register</a>
+            <a href="#" id="logoutBtn">Logout</a>
+            <a href="#" id="mapViewBtn">Map View</a>
+            <a href="#" id="listViewBtn">List View</a>
+
+           
+          </div>
+        </div>
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+      <div id="nav-content">
+<h2 id="main-subheading">Explore Chemnitz: Dive into Art and Innovations</h2>
+<div class="planner-widget autopilot responsive-planner">
+  
+  <div class="search__title"></div>
+  <div class="search__options_container">
+    <div class="search__options" data-form-type="search-2">
+      <a href="#" data-target="search-2" class="js__tab action-button js__tab_active">
+        <span>Explore Destinations</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="search__forms">
+    <!-- Explore Places Only -->
+    <form data-tab="search-2" class="search__form js__tab-target js__tab-target_active" onkeydown="return event.key != 'Enter';">
+      <div class="flex-grid vcenter nowrap">
+        <div class="cell-auto cell-medium-12">
+          <label>Explore</label>
+<input type="text" id="exploreInput" placeholder="Where would you like to explore?" autocomplete="off" />
+
+<div id="exploreSuggestions" style="position: relative;"></div>        </div>
+        <div class="cell-shrink cell-medium-12 submit-cell">
+<button type="button" id="goButton"><span>Go</span></button>
+        </div>
+      </div>
+    </form>
+  
+  </div>
+  
+</div>
+
+</nav>
+
+
+  </nav>
+  <main>
+    <div id="map"></div>
+    <div id="listView"></div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+ const loggedIn = !!loggedInUser;
+  
+    const userInitialDiv = document.getElementById('user-initial-display');
+    const dotsMenu = document.getElementById('dotsMenu');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const loginLink = document.getElementById('loginLink');
+    const registerLink = document.getElementById('registerLink');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const mapViewBtn = document.getElementById('mapViewBtn');
+    const listViewBtn = document.getElementById('listViewBtn');
+    const userDetailsDiv = document.getElementById('userDetails');
+
+    const mapDiv = document.getElementById('map');
+    const listViewDiv = document.getElementById('listView');
+    const categorySelect = document.getElementById('categorySelect');
+    const exploreInput = document.getElementById('exploreInput');
+const exploreSuggestions = document.getElementById('exploreSuggestions');
+
+    
+  
+    let allPlaces = [];
+    let mapMarkers = [];
+    let userLocationMarker = null; // 👈 Add marker for user location
+  
+    // To keep track of user's favorite places (by osmId)
+    let userFavorites = [];
+  
+    function updateNavForLoginState() {
+      if (loggedIn) {
+       
+
+        userInitialDiv.style.display = 'flex';
+        userInitialDiv.textContent = loggedInUser.username.charAt(0).toUpperCase();
+   
+
+        loginLink.style.display = 'none';
+        registerLink.style.display = 'none';
+        logoutBtn.style.display = 'block';
+        mapViewBtn.style.display = 'block';
+        listViewBtn.style.display = 'block';
+        // Refresh the view to show stars
+        if (allPlaces.length > 0) {
+          filterAndDisplayPlaces();
+        }
+      } else {
+        userInitialDiv.style.display = 'none';
+        
+   
+        loginLink.style.display = 'block';
+        registerLink.style.display = 'block';
+        logoutBtn.style.display = 'none';
+        mapViewBtn.style.display = 'block';
+        listViewBtn.style.display = 'block';
+        // Refresh the view to hide stars
+       
+      }
+    }
+    updateNavForLoginState(loggedInUser);
+  
+    dotsMenu.addEventListener('click', () => {
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+  
+    window.addEventListener('click', e => {
+      if (!dotsMenu.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.style.display = 'none';
+      }
+    });
+  
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('token'); 
+      window.location.href = 'index.html';
+    });
+
+
+
+  
+    mapViewBtn.addEventListener('click', () => {
+      mapDiv.style.display = 'block';
+      listViewDiv.style.display = 'none';
+      document.body.classList.remove('list-view');
+      mapDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+  
+    listViewBtn.addEventListener('click', () => {
+      mapDiv.style.display = 'none';
+      listViewDiv.style.display = 'block';
+      document.body.classList.add('list-view');
+      listViewDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+  
+    const map = L.map('map').setView([50.83, 12.92], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+  
+    async function fetchUserFavorites() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        userFavorites = [];
+        return;
+      }
+      try {
+        const response = await fetch('/api/favorites', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.status === 403) {
+          console.error("Access denied to favorites. Invalid or missing token.");
+          userFavorites = [];
+        } else if (response.ok) {
+          const data = await response.json();
+          userFavorites = data.favorites.map(fav => String(fav.osmId || fav)); // Normalize osmId as string
+          console.log("Fetched favorites:", userFavorites);
+        }
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+        userFavorites = [];
+      }
+    }
+  
+    async function populateListView(placesToShow) {
+      
+      listViewDiv.innerHTML = '';
+  
+      const token = localStorage.getItem('token');
+      const loggedIn = !!token;
+  
+      if (loggedIn) {
+        await fetchUserFavorites();
+      } else {
+        userFavorites = [];
+      }
+  
+      placesToShow.forEach(place => {
+        const div = document.createElement('div');
+        div.className = 'list-item';
+  
+        const img = document.createElement('img');
+        img.src = place.imageUrl || 'default-image.jpg';
+        img.alt = place.name;
+  
+        const content = document.createElement('div');
+        content.className = 'list-item-content';
+  
+        const title = document.createElement('h3');
+        title.textContent = place.name;
+  
+        const desc = document.createElement('p');
+        desc.textContent = place.description || 'No description available.';
+  
+        if (place.website) {
+          const readMore = document.createElement('a');
+          readMore.href = place.website;
+          readMore.textContent = ' Read more';
+          readMore.target = '_blank';
+          readMore.rel = 'noopener noreferrer';
+          readMore.style.fontWeight = 'bold';
+          desc.appendChild(readMore);
+        }
+  
+        const linkContainer = document.createElement('div');
+        linkContainer.style.display = 'flex';
+        linkContainer.style.alignItems = 'center';
+        linkContainer.style.gap = '10px';
+  
+        const link = document.createElement('a');
+        link.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place.name + ', Chemnitz, Germany')}`;
+        link.target = '_blank';
+        link.className = 'location-link';
+        link.textContent = 'Get Directions';
+  
+        // Favorite star
+        const star = document.createElement('span');
+        star.className = 'favorite-star';
+        star.innerHTML = '★';
+        star.title = 'Add to favorites';
+        console.log('Place OSM ID:', place.osmId);
+
+        star.dataset.placeId = place.osmId;
+  
+        if (userFavorites.includes(String(place.osmId))) {
+          star.classList.add('favorited');
+        }
+  
+        // Show star only for logged in users
+        star.style.display = loggedIn ? 'inline-block' : 'block';
+  
+        star.addEventListener('click', async function (e) {
+          e.stopPropagation();
+          if (!loggedIn) return;
+  
+          const placeId = this.dataset.placeId;
+          if (!placeId) {
+  console.error('No placeId found for favorite toggle');
+  return;
+}
+          this.classList.toggle('favorited');
+          const isFavorited = this.classList.contains('favorited');
+  
+          const token = localStorage.getItem('token');
+  
+          try {
+            const response = await fetch(`/api/favorites/toggle/${placeId}`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            if (!response.ok) throw new Error('Failed to toggle favorite');
+  
+            const data = await response.json();
+  
+            // Update userFavorites array with server response
+            userFavorites = data.favorites.map(fav => String(fav.osmId || fav));
+  
+            // Update UI stars accordingly
+            filterAndDisplayPlaces(); // Refresh list view to sync stars
+          } catch (error) {
+            console.error('Error toggling favorite:', error);
+            // revert star toggle if error
+            this.classList.toggle('favorited');
+          }
+        });
+  
+        // Build structure
+        content.appendChild(title);
+        content.appendChild(desc);
+  
+        linkContainer.appendChild(link);
+        linkContainer.appendChild(star);
+  
+        content.appendChild(linkContainer);
+        div.appendChild(img);
+        div.appendChild(content);
+        listViewDiv.appendChild(div);
+      });
+    }
+  
+    function renderMapMarkers(places) {
+      mapMarkers.forEach(marker => map.removeLayer(marker));
+      mapMarkers = [];
+  
+      places.forEach(place => {
+        if (place.location?.lat && place.location?.lng) {
+          const marker = L.marker([place.location.lat, place.location.lng], {
+            icon: L.icon({
+              iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+              shadowSize: [41, 41]
+            })
+          }).addTo(map).bindPopup(`<strong>${place.name}</strong><br>${place.description || ''}`);
+          mapMarkers.push(marker);
+        }
+      });
+    }
+  
+  function filterAndDisplayPlaces() {
+  const category = categorySelect.value;
+  const query = exploreInput.value.trim().toLowerCase();
+
+  let filtered = allPlaces;
+
+  if (category !== 'all') {
+    filtered = filtered.filter(p => p.category === category);
+  }
+
+  if (query) {
+    filtered = filtered.filter(p => p.name.toLowerCase().includes(query));
+  }
+
+  populateListView(filtered);
+  renderMapMarkers(filtered);
+
+  // Show suggestions
+  exploreSuggestions.innerHTML = '';
+  if (query && filtered.length > 0) {
+    filtered.slice(0, 6).forEach(p => {
+      const div = document.createElement('div');
+      div.textContent = p.name;
+     div.addEventListener('click', () => {
+  exploreInput.value = p.name;
+  exploreSuggestions.style.display = 'none';
+});
+
+      exploreSuggestions.appendChild(div);
+    });
+    exploreSuggestions.style.display = 'block';
+  } else {
+    exploreSuggestions.style.display = 'none';
+  }
+}
+
+  
+    fetch('/api/places')
+      .then(res => res.json())
+      .then(data => {
+        allPlaces = data;
+        filterAndDisplayPlaces();
+      });
+    
+  
+    categorySelect.addEventListener('change', () => {
+      filterAndDisplayPlaces();
+      scrollToMap();
+    });
+  
+exploreInput.addEventListener('input', filterAndDisplayPlaces);
+  
+   document.addEventListener('click', e => {
+  if (!exploreInput.contains(e.target) && !exploreSuggestions.contains(e.target)) {
+    exploreSuggestions.style.display = 'none';
+  }
+});
+
+  
+    function getLocation() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser');
+        return;
+      }
+  
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        map.setView([lat, lng], 15);
+  
+        if (userLocationMarker) {
+          map.removeLayer(userLocationMarker);
+        }
+  
+        const manIcon = L.icon({
+          iconUrl: 'https://cdn-icons-png.flaticon.com/512/4140/4140051.png',
+          iconSize: [40, 40],
+          iconAnchor: [20, 40],
+          popupAnchor: [0, -35]
+        });
+  
+        userLocationMarker = L.marker([lat, lng], { icon: manIcon })
+          .addTo(map)
+          .bindPopup('You are here!')
+          .openPopup();
+      }, err => {
+        alert('Unable to retrieve your location');
+      });
+    }
+  
+    window.getLocation = getLocation;
+  
+    function scrollToMap() {
+      const mapElement = document.getElementById("map");
+      if (mapElement) {
+        mapElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  
+    document.getElementById("gpsButton").addEventListener("click", () => {
+      scrollToMap();
+    });
+    document.getElementById('goButton').addEventListener('click', () => {
+  filterAndDisplayPlaces();  
+  scrollToMap();             
+});
+document.getElementById('backButton').addEventListener('click', () => {
+  window.location.href = 'index.html';  
+});
+
+document.getElementById('travelJournalBtn').addEventListener('click', () => {
+  window.location.href = 'travel-journal.html';
+});
+
+    
+  </script>

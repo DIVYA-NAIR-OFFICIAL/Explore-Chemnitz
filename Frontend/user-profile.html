@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Profile</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 40px;
+      color: #333;
+    }
+    h1 {
+      color: #0072ff;
+    }
+    .profile-container {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #0072ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #usernameUpdateMsg {
+      margin-top: 10px;
+      font-size: 0.9em;
+    }
+    #backToHome {
+      margin-top: 30px;
+      display: inline-block;
+      color: #0072ff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h1>User Profile</h1>
+    <p><strong>Username:</strong> <span id="usernameDisplay"></span></p>
+    <p><strong>Email:</strong> <span id="emailDisplay"></span></p>
+
+    <form id="editUsernameForm">
+      <label for="newUsername">Edit Username</label>
+      <input type="text" id="newUsername" placeholder="New Username" required />
+      <button type="submit">Update</button>
+      <p id="usernameUpdateMsg"></p>
+    </form>
+
+    <button id="deleteAccountBtn" style="background: red; margin-top: 20px;">Delete Account</button>
+
+    <div id="backToHome" onclick="window.location.href='index.html'">← Back to Home</div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    const token = localStorage.getItem('token');
+
+    if (!user || !token) {
+      window.location.href = 'login.html'; // redirect if not logged in
+    }
+
+    document.getElementById('usernameDisplay').textContent = user.username;
+    document.getElementById('emailDisplay').textContent = user.email;
+
+    document.getElementById('editUsernameForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newUsername = document.getElementById('newUsername').value.trim();
+      const msg = document.getElementById('usernameUpdateMsg');
+
+      try {
+        const res = await fetch('/api/users/update-username', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ username: newUsername })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('loggedInUser', JSON.stringify({ ...user, username: newUsername }));
+          msg.style.color = 'green';
+          msg.textContent = 'Username updated successfully!';
+          document.getElementById('usernameDisplay').textContent = newUsername;
+        } else {
+          msg.style.color = 'red';
+          msg.textContent = data.msg || 'Error updating username.';
+        }
+      } catch (error) {
+        msg.style.color = 'red';
+        msg.textContent = 'Server error.';
+      }
+    });
+
+    document.getElementById('deleteAccountBtn').addEventListener('click', async () => {
+      if (!confirm('Are you sure you want to delete your account? This action is permanent.')) return;
+
+      try {
+        const res = await fetch('/api/users/delete-account', {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.ok) {
+          localStorage.clear();
+          alert('Account deleted successfully.');
+          window.location.href = 'register.html';
+        } else {
+          alert('Failed to delete account.');
+        }
+      } catch (err) {
+        alert('Server error.');
+      }
+    });
+  </script>
+</body>
+</html>

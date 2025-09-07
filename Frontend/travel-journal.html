@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Travel Journal - Split Layout</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+ html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: img src = ('/images/jour.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  display: flex;
+}
+  .container {
+    display: flex;
+    flex: 1;
+    height: 100vh;
+    overflow: hidden;
+  }
+.left-heading {
+  text-align: left;
+}
+
+.right-heading-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+  margin-bottom: 28px;
+}
+
+.right-heading {
+  color: #0072ff;
+  font-weight: 700;
+  margin: 10;
+  padding: 10;
+}
+
+
+  .left-panel {
+    width: 400px;
+    background: transparent;
+    box-shadow: 4px 0 14px rgba(0,0,0,0.1);
+    padding: 24px 250px;
+    display: flex;
+    flex-direction: column;
+  }
+  .left-panel h2 {
+    margin: 0 0 24px;
+    color: #0072ff;
+    font-weight: 700;
+  }
+  label {
+    font-weight: 600;
+    margin-top: 14px;
+    display: block;
+    color: #555;
+  }
+  input[type="text"], textarea {
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px 14px;
+    border: 1.6px solid #ccc;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: #0072ff;
+    outline: none;
+  }
+  textarea {
+    min-height: 110px;
+  }
+  input[type="file"] {
+    margin-top: 12px;
+  }
+  .photo-preview {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .photo-wrapper {
+    position: relative;
+    width: 90px;
+    height: 70px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  }
+  .photo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .delete-photo {
+    position: absolute;
+    top: 4px; right: 6px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    font-weight: bold;
+    color: #e74c3c;
+    text-align: center;
+    line-height: 18px;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    transition: background-color 0.3s ease;
+  }
+  .delete-photo:hover {
+    background: #e74c3c;
+    color: white;
+  }
+  button.save-btn {
+    margin-top: auto;
+    background-color: #0072ff;
+    border: none;
+    padding: 16px 0;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button.save-btn:hover {
+    background-color: #005bb5;
+  }
+
+  /* Right panel - community feed */
+  .right-panel {
+    flex: 1;
+    overflow-y: 30;
+    padding: 24px 40px;
+    background: transparent;
+  }
+  
+  .story-card {
+    background: white;
+    padding: 18px 26px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    margin-bottom: 28px;
+  }
+  .story-card h3 {
+    margin: 0 0 10px;
+    color: #34495e;
+  }
+  .story-card p {
+    font-size: 15.5px;
+    line-height: 1.5;
+    color: #555;
+    white-space: pre-wrap;
+  }
+  .story-photos {
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .story-photos img {
+    border-radius: 12px;
+    width: 140px;
+    height: 100px;
+    object-fit: cover;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .story-photos img:hover {
+    transform: scale(1.08);
+  }
+
+  #communityStories {
+  max-width: 600px;      
+  margin-left: auto;    
+  margin-right: 0;      
+}
+  .right-panel::-webkit-scrollbar {
+    width: 12px;
+  }
+  .right-panel::-webkit-scrollbar-track {
+    background: #e8f0fe;
+  }
+  .right-panel::-webkit-scrollbar-thumb {
+    background-color: #0072ff;
+    border-radius: 10px;
+    border: 3px solid #e8f0fe;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 850px) {
+    body, html {
+      flex-direction: column;
+    }
+    .left-panel {
+      width: 100%;
+      height: auto;
+      box-shadow: none;
+      padding: 20px 24px;
+    }
+    .right-panel {
+      height: 60vh;
+      padding: 20px 24px;
+    }
+    #placeSuggestions li a {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background-color: #e6f0ff;
+  color: #0072ff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+#placeSuggestions li a:hover {
+  background-color: #0072ff;
+  color: white;
+  text-decoration: none;
+}
+
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="left-panel">
+    <h2>Add Travel Story</h2>
+
+    <label for="storyTitle">Title</label>
+    <input type="text" id="storyTitle" placeholder="Enter your story title" />
+
+    <label for="storyNotes">Notes</label>
+    <textarea id="storyNotes" placeholder="Write about your journey..."></textarea>
+
+    <label for="photoUpload">Upload Photos</label>
+    <input type="file" id="photoUpload" multiple accept="image/*" />
+
+    <div class="photo-preview" id="photoPreview"></div>
+
+    <button class="save-btn" id="saveJournal">Save Story</button>
+  </div>
+
+  <div class="right-panel">
+  <div class="right-heading-wrapper">
+    <h2 class="right-heading">Community Travel Stories</h2>
+  </div>
+  <div id="communityStories"></div>
+</div>
+  
+
+</div>
+
+<script>
+  const photoUpload = document.getElementById('photoUpload');
+  const photoPreview = document.getElementById('photoPreview');
+  const communityStories = document.getElementById('communityStories');
+
+  let photosArray = [];
+
+  photoUpload.addEventListener('change', () => {
+    const files = Array.from(photoUpload.files);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        photosArray.push({ file, dataUrl: e.target.result });
+        renderPhotos();
+      };
+      reader.readAsDataURL(file);
+    });
+    photoUpload.value = '';
+  });
+
+  function renderPhotos() {
+    photoPreview.innerHTML = '';
+    photosArray.forEach((photoObj, index) => {
+      const div = document.createElement('div');
+      div.className = 'photo-wrapper';
+
+      const img = document.createElement('img');
+      img.src = photoObj.dataUrl;
+      div.appendChild(img);
+
+      const delBtn = document.createElement('span');
+      delBtn.className = 'delete-photo';
+      delBtn.innerHTML = '&times;';
+      delBtn.title = 'Delete photo';
+      delBtn.onclick = () => {
+        photosArray.splice(index, 1);
+        renderPhotos();
+      };
+      div.appendChild(delBtn);
+
+      photoPreview.appendChild(div);
+    });
+  }
+
+  function createStoryCard(story) {
+    const card = document.createElement('div');
+    card.className = 'story-card';
+
+    const titleEl = document.createElement('h3');
+    titleEl.textContent = story.title;
+    card.appendChild(titleEl);
+
+    const notesEl = document.createElement('p');
+    notesEl.textContent = story.notes;
+    card.appendChild(notesEl);
+
+    if (story.photos && story.photos.length > 0) {
+      const photosDiv = document.createElement('div');
+      photosDiv.className = 'story-photos';
+
+      story.photos.forEach(photoDataUrl => {
+        const img = document.createElement('img');
+        img.src = photoDataUrl;
+        photosDiv.appendChild(img);
+      });
+
+      card.appendChild(photosDiv);
+    }
+
+    return card;
+  }
+
+const dummyStories = [
+  {
+    title: "Karl-Marx-Monument",
+    notes: "The giant Karl-Marx-Monument is the symbol of Chemnitz and a must-visit place.",
+    photos: [
+      "https://c7.alamy.com/comp/T1A56W/karl-marx-monument-chemnitz-germany-T1A56W.jpg",
+      "https://c7.alamy.com/comp/DWY9FE/marx-engels-monument-berlin-germany-DWY9FE.jpg"
+    ]
+  },
+
+  {
+    title: "Roter Turm (Red Tower)",
+    notes: "Historic medieval tower located in the city center, perfect for a short visit.",
+    photos: [
+      "https://chemnitz2025.de/fileadmin/_processed_/8/7/csm_C2025_Katalog_Innenteil_PF_52-53_20f0006cb4.webp"
+    ]
+  }
+];
+
+  dummyStories.forEach(story => {
+    communityStories.appendChild(createStoryCard(story));
+  });
+
+  document.getElementById('saveJournal').addEventListener('click', () => {
+    const title = document.getElementById('storyTitle').value.trim();
+    const notes = document.getElementById('storyNotes').value.trim();
+
+    if (!title) {
+      alert('Please enter a title for your story.');
+      return;
+    }
+    if (!notes) {
+      alert('Please write some notes about your journey.');
+      return;
+    }
+
+    const photosDataUrls = photosArray.map(p => p.dataUrl);
+
+    const newStory = {
+      title,
+      notes,
+      photos: photosDataUrls,
+    };
+
+    communityStories.prepend(createStoryCard(newStory));
+
+    document.getElementById('storyTitle').value = '';
+    document.getElementById('storyNotes').value = '';
+    photosArray = [];
+    renderPhotos();
+
+    alert('Your travel story was added!');
+  });
+
+const placeSuggestions = [
+  "Schlossberg Chemnitz",             
+  "Kaßbergviertel Chemnitz",        
+  "Kappelpark Chemnitz",          
+  "Wasserschloss Klaffenbach",       
+  "Museum für Archäologie Chemnitz" 
+];
+function renderPlaceSuggestions() {
+  const ul = document.getElementById('placeSuggestions');
+  ul.innerHTML = '';
+  placeSuggestions.forEach(place => {
+    const li = document.createElement('li');
+    li.style.marginBottom = '10px';
+
+    const a = document.createElement('a');
+    a.href = `https://www.google.com/search?q=${encodeURIComponent(place)}`;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.textContent = place;
+    a.style.color = '#0072ff';
+    a.style.textDecoration = 'none';
+    a.style.fontWeight = '600';
+    a.addEventListener('mouseover', () => a.style.textDecoration = 'underline');
+    a.addEventListener('mouseout', () => a.style.textDecoration = 'none');
+
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
+}
+
+renderPlaceSuggestions();
+
+</script>
+
+</body>
+</html>

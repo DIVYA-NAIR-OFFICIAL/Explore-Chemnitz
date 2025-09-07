@@ -1,0 +1,12 @@
+[{
+  
+  "_id": {
+    "$oid": "68627a0a46e90d511f572009"
+  },
+  "username": "TestUser",
+  "email": "TestUser1@gmail.com",
+  "password": "$2b$10$.cd41Ie5eUvXa53SfqerT.ZDx9/maTKFBLv4LzWYe.e7RAtkU8v1m",
+  "favorites": [],
+  "__v": 0
+
+}]

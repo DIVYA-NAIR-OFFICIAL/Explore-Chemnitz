@@ -1,0 +1,105 @@
+[{
+  "_id": {
+    "$oid": "684d6903ea55e4926256ff4f"
+  },
+  "osmId": "Museum_0101",
+  "name": "Museum Gunzenhauser",
+  "description": "The Gunzenhauser Museum is the newest addition to the Chemnitz Art Collections. It houses the collection of Munich-based gallerist Dr. Alfred Gunzenhauser, comprising more than 3,000 works by 270 artists, focusing on turn-of-the-century art around 1900, Expressionism, New Objectivity, and 20th-century abstraction.",
+  "category": "museums",
+  "website": "https://www.kunstsammlungen-chemnitz.de/haeuser/museum-gunzenhauser/",
+  "location": {
+    "lat": 50.83362,
+    "lng": 12.92893
+  },
+  "imageUrl": "/images/Museum 1.jpg"
+},
+{
+  "_id": {
+    "$oid": "685d5b89c803ae48d0e683c0"
+  },
+  "osmId": "1002",
+  "name": "Botanical Garden",
+  "description": "The Botanical Garden on Leipziger Straße in the north of Chemnitz is a centre of attraction for visitors of all ages. The common goal is to familiarise the population and especially children and young people with nature in different ways.",
+  "category": "garden",
+  "website": "https://www.chemnitz.de/en/life-in-chemnitz/leisure/botanical-garden",
+  "location": {
+    "lat": 50.8391,
+    "lng": 12.9387
+  },
+  "imageUrl": "/images/botanical garden.jpeg"
+},
+{
+  "_id": {
+    "$oid": "685d97bdc803ae48d0e683c2"
+  },
+  "osmId": "new_saxon_gallery_001",
+  "name": "New Saxon Gallery",
+  "description": "The Neue Sächsische Galerie is the museum for contemporary art in Chemnitz. Its presentations focus on the development of art in the state of Saxony since 1945, while the six to eight exhibitions held each year also recognise positions beyond the region.",
+  "category": "galleries",
+  "website": "https://www.chemnitz.de/en/culture/museums/museums_museums_facilities/neue_saechsische_galerie",
+  "location": {
+    "lat": 50.8283,
+    "lng": 12.9084
+  },
+  "imageUrl": "/images/Saxon gallery.jpg"
+},
+{
+  "_id": {
+    "$oid": "684d6903ea55e4926256ff50"
+  },
+  "osmId": "1234567890",
+  "name": "Schloßbergmuseum - Kunstsammlungen Chemnitz",
+  "description": "The Schloßbergmuseum in Chemnitz is the city history museum of Chemnitz and is located in one of the most beautiful and best-preserved monastery complexes in Saxony. It is part of the Art Collections Chemnitz and showcases an impressive collection on the history of the city from the Middle Ages to modern times.",
+  "category": "museum",
+  "website": "https://www.chemnitz.travel/poi/schlossbergmuseum-kunstsammlungen-chemnitz-chemnitz",
+  "location": {
+    "lat": 50.83312,
+    "lng": 12.92862
+  },
+  "imageUrl": "/images/Schlo.jpg"
+},
+{
+  "_id": {
+    "$oid": "684d6903ea55e4926256ff51"
+  },
+  "osmId": "9876543210",
+  "name": "Rabenstein Castle",
+  "description": "Rabenstein Castle is located in the Rabenstein district of Chemnitz and forms part of the Schloßbergmuseum. It was built in the second half of the 12th century during the settlement of the foothills of the Erzgebirge mountains. The frequently used nickname »Saxony’s smallest castle« is somewhat misleading in that the buildings still standing today make up only the heart of a formerly much larger complex.",
+  "category": "castle",
+  "website": "https://www.kunstsammlungen-chemnitz.de/en/burg-rabenstein/",
+  "location": {
+    "lat": 50.8393,
+    "lng": 12.9199
+  },
+  "imageUrl": "/images/Rabenstien.jpeg.webp"
+},
+{
+  "_id": {
+    "$oid": "685dab0dc803ae48d0e683cf"
+  },
+  "osmId": "809271128",
+  "name": "Wasserschloss Klaffenbach",
+  "description": "The Klaffenbach moated castle (historical name Neukirchen Castle), located in the Klaffenbach district of the Saxon city of Chemnitz not far from the Würschnitz, was built at the beginning of the 16th century, significantly rebuilt at the beginning of the 17th century and represents a unique example of a Renaissance moated castle in Saxony.",
+  "category": "castle",
+  "website": "https://de.wikipedia.org/wiki/Wasserschloss_Klaffenbach",
+  "location": {
+    "lat": 50.76912,
+    "lng": 12.88928
+  },
+  "imageUrl": "/images/Wasser.jpg"
+},
+{
+  "_id": {
+    "$oid": "685dacf8c803ae48d0e683d1"
+  },
+  "osmId": "VillaEsche123",
+  "name": "Restaurant Villa Esche",
+  "description": "Located in a coach house overlooking Henry van de Velde's Art Nouveau Gesamtkunstwerk (total work of art), you can enjoy exquisite dining. The bright room with its panoramic view is a real invitation to linger. Those who prefer to make their own dishes can also book one of the popular cooking classes. Of course, the visit can also be wonderfully combined with a tour of the Henry van de Velde Museum in Villa Esche.",
+  "category": "other",
+  "website": "https://www.chemnitz.travel/gastro/restaurant-villa-esche",
+  "location": {
+    "lat": 50.835,
+    "lng": 12.9235
+  },
+  "imageUrl": "/images/villa.jpg"
+}]

@@ -7,7 +7,5 @@
     { "src": "/api/(.*)", "dest": "../Backend/server.js" },
     { "src": "/images/(.*)", "dest": "/images/$1" },
     { "src": "/styles.css", "dest": "/styles.css" },
-    { "src": "/index.html", "dest": "/index.html" },
-    { "src": "/", "dest": "/index.html" }
-  ]
+ { "src": "/(.*)", "dest": "/index.html" }  ]
 }

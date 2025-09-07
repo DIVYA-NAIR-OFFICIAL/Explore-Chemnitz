@@ -40,7 +40,7 @@
     nav#main-navbar {
       width: 100%;
       height: 900px;
-      background-image: url("./images/earth.png");
+      background-image: url("/images/earth.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -768,7 +768,7 @@ const exploreSuggestions = document.getElementById('exploreSuggestions');
         div.className = 'list-item';
   
         const img = document.createElement('img');
-        img.src = place.imageUrl || 'default-image.jpg';
+    img.src = place.imageUrl || '/images/default-image.jpg';
         img.alt = place.name;
   
         const content = document.createElement('div');

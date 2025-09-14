@@ -1,19 +1,20 @@
-const cors = require('cors');
 const express = require('express');
+const path = require('path');
+const app = express();
+const cors = require('cors');
 const mongoose = require('mongoose');
 
-// --- Correct relative paths to your route files ---
+// --- Import routes ---
 const usersRouter = require('./routes/users');
 const placesRouter = require('./routes/places');
 const authRoutes = require('./routes/auth');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 
-const app = express();
-
-app.use(cors());
+// --- Middleware ---
 app.use(express.json());
+app.use(cors());
 
-// Database Connection
+// --- Database Connection ---
 mongoose.connect(
   process.env.MONGO_URI,
   {
@@ -24,11 +25,14 @@ mongoose.connect(
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// API Routes
+// --- Serve Static Files ---
+app.use(express.static(path.join(__dirname, '../public')));
+
+// --- API Routes ---
 app.use('/api/users', usersRouter);
 app.use('/api/places', placesRouter);
 app.use('/api/auth', authRoutes);
 app.use('/api/favorites', favoriteRoutes);
 
-// Vercel Deployment
+// --- Vercel Deployment ---
 module.exports = app;

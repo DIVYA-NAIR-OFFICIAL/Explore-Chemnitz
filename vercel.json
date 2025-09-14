@@ -1,11 +1,15 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "Backend/app.js",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
-    { "src": "/api/auth/(.*)", "dest": "/api/auth.js" },
-    { "src": "/api/favorites/(.*)", "dest": "/api/favorites/[placeId].js" },
-    { "src": "/api/favorites", "dest": "/api/favorites.js" },
-    { "src": "/api/places", "dest": "/api/places.js" },
-    { "src": "/api/users", "dest": "/api/users.js" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/Backend/app.js"
+    }
   ]
 }
